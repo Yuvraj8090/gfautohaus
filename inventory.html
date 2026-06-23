@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Inventory | G&F Autohaus AG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+  <script src="data.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ink: #111827;
+      --muted: #667085;
+      --line: #e4e7ec;
+      --soft: #f5f7fa;
+      --paper: #ffffff;
+      --gold: #c49a25;
+      --gold-dark: #9a7313;
+      --green: #22c55e;
+      --blue: #2563eb;
+      --shadow: 0 22px 55px rgba(17, 24, 39, .12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Roboto", sans-serif;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f6f8 45%, #ffffff 100%);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+    }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px clamp(18px, 5vw, 72px);
+      background: rgba(255, 255, 255, .86);
+      border-bottom: 1px solid rgba(228, 231, 236, .9);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 10px 30px rgba(17, 24, 39, .05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--ink), #3b4556);
+      box-shadow: 0 10px 20px rgba(17, 24, 39, .18);
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      color: #344054;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 10px 2px;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 4px;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .22s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 850;
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+    }
+
+    .icon-btn {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+    }
+
+    .main-content {
+      padding-top: 92px;
+      padding-bottom: 80px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.2;
+      margin: 0 0 24px;
+      font-weight: 900;
+    }
+
+    .section-container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 clamp(18px, 5vw, 72px);
+    }
+
+    .header-section {
+      padding: 40px clamp(18px, 5vw, 72px);
+    }
+
+    .inventory-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 clamp(18px, 5vw, 72px);
+    }
+
+    .filter-panel {
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-panel h3 {
+      margin: 0 0 18px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      color: #344054;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font-family: "Roboto", sans-serif;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: rgba(196, 154, 37, .7);
+      box-shadow: 0 0 0 4px rgba(196, 154, 37, .12);
+    }
+
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .vehicle-card {
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 16px 42px rgba(17, 24, 39, .08);
+      transition: transform .25s ease, box-shadow .25s ease;
+      cursor: pointer;
+    }
+
+    .vehicle-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .vehicle-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: #eef2f7;
+    }
+
+    .vehicle-info {
+      padding: 18px;
+    }
+
+    .vehicle-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin: 0 0 8px;
+    }
+
+    .vehicle-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+
+    .vehicle-price {
+      color: var(--gold-dark);
+      font-weight: 950;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .vehicle-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .vehicle-specs span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .vehicle-card button {
+      width: 100%;
+      min-height: 44px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 900;
+      transition: background .2s ease;
+    }
+
+    .vehicle-card button:hover {
+      background: var(--gold-dark);
+    }
+
+    /* Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(17, 24, 39, .45);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-backdrop.open {
+      display: grid;
+    }
+
+    .modal {
+      width: min(900px, 100%);
+      max-height: min(90vh, 900px);
+      overflow: auto;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 35px 80px rgba(17, 24, 39, .3);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      background: #fff;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .close-btn {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .close-btn:hover {
+      background: var(--line);
+    }
+
+    .modal-body {
+      padding: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    /* Image Carousel */
+    .carousel {
+      width: 100%;
+      background: #eef2f7;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+
+    .carousel-inner {
+      display: flex;
+      transition: transform .45s ease;
+      height: 100%;
+    }
+
+    .carousel-item {
+      min-width: 100%;
+      height: 100%;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, .5);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      transition: background .2s ease;
+      z-index: 10;
+    }
+
+    .carousel-nav:hover {
+      background: rgba(0, 0, 0, .7);
+    }
+
+    .carousel-prev {
+      left: 12px;
+    }
+
+    .carousel-next {
+      right: 12px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(0, 0, 0, .1);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .5);
+      border: 2px solid rgba(255, 255, 255, .8);
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .dot.active {
+      background: white;
+      width: 28px;
+      border-radius: 999px;
+    }
+
+    .vehicle-details {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .details-header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+    }
+
+    .details-header h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .spec-table tr {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .spec-table td {
+      padding: 12px 0;
+      font-size: 14px;
+    }
+
+    .spec-table td.label {
+      color: var(--muted);
+      font-weight: 700;
+      width: 50%;
+    }
+
+    .spec-table td.value {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      min-height: 46px;
+      border-radius: 8px;
+      font-weight: 900;
+      transition: all .2s ease;
+    }
+
+    .action-buttons .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #fff;
+    }
+
+    .action-buttons .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+    }
+
+    .action-buttons .btn-secondary {
+      background: var(--soft);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .action-buttons .btn-secondary:hover {
+      background: var(--line);
+    }
+
+    .result-count {
+      padding: 16px clamp(18px, 5vw, 72px);
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 62px clamp(18px, 5vw, 72px) 28px;
+      color: #f8fafc;
+      background: linear-gradient(135deg, #111827, #242f42);
+      margin-top: 80px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      max-width: 1220px;
+      margin: 0 auto 40px;
+    }
+
+    footer h3, footer h4 {
+      margin: 0 0 14px;
+      font-weight: 900;
+    }
+
+    footer p, footer li {
+      margin: 0 0 9px;
+      color: #cbd5e1;
+      line-height: 1.65;
+      list-style: none;
+    }
+
+    footer ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-bottom {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1050px) {
+      .nav-links {
+        display: none;
+      }
+
+      .inventory-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-panel {
+        position: static;
+      }
+
+      .vehicle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .modal-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        padding: 12px 14px;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .vehicle-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .vehicle-specs {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><i class="fa-solid fa-car-side"></i></span>
+      G&F <span>Autohaus</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="inventory.html" class="active">Inventory</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="admin-login.html" class="primary-btn"><i class="fa-solid fa-lock"></i> Admin</a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="header-section">
+      <h1>Our Vehicle Inventory</h1>
+      <p style="color: var(--muted); font-size: 18px; margin: 0;">Browse our selection of premium vehicles. Click on any vehicle to view details and high-resolution images.</p>
+    </div>
+
+    <div class="inventory-layout">
+      <aside class="filter-panel">
+        <h3>Filters</h3>
+
+        <div class="field">
+          <label for="searchInput">Search</label>
+          <input id="searchInput" type="search" placeholder="Brand, model...">
+        </div>
+
+        <div class="field">
+          <label for="bodySelect">Body Type</label>
+          <select id="bodySelect">
+            <option value="all">All types</option>
+            <option value="Estate">Estate</option>
+            <option value="Hatchback">Hatchback</option>
+            <option value="SUV">SUV</option>
+            <option value="Sedan">Sedan</option>
+            <option value="Convertible">Convertible</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fuelSelect">Fuel Type</label>
+          <select id="fuelSelect">
+            <option value="all">All types</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Mild Hybrid Petrol">Mild Hybrid Petrol</option>
+            <option value="Mild Hybrid Diesel">Mild Hybrid Diesel</option>
+            <option value="Electric">Electric</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="driveSelect">Drive</label>
+          <select id="driveSelect">
+            <option value="all">All drives</option>
+            <option value="AWD">AWD</option>
+            <option value="RWD">RWD</option>
+            <option value="FWD">FWD</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="budgetRange">Max Price: <strong id="budgetValue">CHF 80'000</strong></label>
+          <input id="budgetRange" type="range" min="4000" max="80000" step="1000" value="80000">
+        </div>
+      </aside>
+
+      <div>
+        <div class="result-count" id="resultCount">Loading vehicles...</div>
+        <div class="vehicle-grid" id="vehicleGrid"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Vehicle Detail Modal -->
+  <div class="modal-backdrop" id="vehicleModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Vehicle Details</h2>
+        <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h3>G&F Autohaus AG</h3>
+        <p>Premium vehicle brokerage for buying, selling, trade-ins, financing, insurance, and partner repair coordination.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <p>Oberfeld 4<br />6037 Root<br />Switzerland</p>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>Mon-Fri: 08:00-18:30</li>
+          <li>Sat: 09:00-16:00</li>
+          <li>Sun: Closed</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>079 722 70 70<br />gfautohaus@outlook.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 G&F Autohaus AG. Premium Vehicle Brokerage.</div>
+  </footer>
+
+  <script>
+    let vehicles = getVehiclesFromStorage();
+    let currentSlide = 0;
+
+    function renderVehicles() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const body = document.getElementById('bodySelect').value;
+      const fuel = document.getElementById('fuelSelect').value;
+      const drive = document.getElementById('driveSelect').value;
+      const budget = parseInt(document.getElementById('budgetRange').value);
+
+      const filtered = vehicles.filter(car => {
+        const matchesSearch = car.make.toLowerCase().includes(search) || car.model.toLowerCase().includes(search);
+        const matchesBody = body === 'all' || car.body === body;
+        const matchesFuel = fuel === 'all' || car.fuel === fuel;
+        const matchesDrive = drive === 'all' || car.drive === drive;
+        const matchesBudget = car.price <= budget;
+        return matchesSearch && matchesBody && matchesFuel && matchesDrive && matchesBudget;
+      });
+
+      document.getElementById('resultCount').textContent = `${filtered.length} vehicle${filtered.length !== 1 ? 's' : ''} available`;
+
+      const grid = document.getElementById('vehicleGrid');
+      grid.innerHTML = filtered.map(car => `
+        <div class="vehicle-card" onclick="openVehicleModal(${car.id})">
+          <img src="${car.images[0]}" alt="${car.make} ${car.model}" class="vehicle-img">
+          <div class="vehicle-info">
+            <div class="vehicle-title">${car.make}</div>
+            <div class="vehicle-subtitle">${car.model}</div>
+            <div class="vehicle-price">CHF ${car.price.toLocaleString('de-CH')}</div>
+            <div class="vehicle-specs">
+              <span><i class="fa-solid fa-gauge"></i> ${car.km}</span>
+              <span><i class="fa-solid fa-bolt"></i> ${car.power.split(' ')[0]} PS</span>
+              <span><i class="fa-solid fa-gears"></i> ${car.drive}</span>
+              <span><i class="fa-solid fa-gas-pump"></i> ${car.fuel.split(' ')[0]}</span>
+            </div>
+            <button><i class="fa-solid fa-magnifying-glass"></i> View Details</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openVehicleModal(id) {
+      const car = vehicles.find(v => v.id === id);
+      if (!car) return;
+
+      currentSlide = 0;
+      document.getElementById('modalTitle').textContent = `${car.make} ${car.model}`;
+
+      const modalBody = document.getElementById('modalBody');
+      const images = car.images || [car.images];
+
+      modalBody.innerHTML = `
+        <div>
+          <div class="carousel">
+            <div class="carousel-container">
+              <div class="carousel-inner" id="carouselInner">
+                ${images.map(img => `<div class="carousel-item"><img src="${img}" alt="${car.make}"></div>`).join('')}
+              </div>
+              <button class="carousel-nav carousel-prev" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="carousel-nav carousel-next" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="carousel-dots" id="carouselDots">
+              ${images.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="vehicle-details">
+          <div class="details-header">
+            <h3>Price</h3>
+            <div style="font-size: 28px; font-weight: 950; color: var(--gold-dark);">CHF ${car.price.toLocaleString('de-CH')}</div>
+          </div>
+
+          <div>
+            <h3 style="margin-top: 0;">Specifications</h3>
+            <table class="spec-table">
+              <tr><td class="label">Brand</td><td class="value">${car.make}</td></tr>
+              <tr><td class="label">Model</td><td class="value">${car.model}</td></tr>
+              <tr><td class="label">Year</td><td class="value">${car.year}</td></tr>
+              <tr><td class="label">Body Type</td><td class="value">${car.body}</td></tr>
+              <tr><td class="label">Fuel Type</td><td class="value">${car.fuel}</td></tr>
+              <tr><td class="label">Drive</td><td class="value">${car.drive}</td></tr>
+              <tr><td class="label">Mileage</td><td class="value">${car.km}</td></tr>
+              <tr><td class="label">Power</td><td class="value">${car.power}</td></tr>
+              <tr><td class="label">Transmission</td><td class="value">${car.transmission}</td></tr>
+            </table>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-primary" onclick="contactAboutVehicle(${car.id})"><i class="fa-solid fa-envelope"></i> Contact</button>
+            <button class="btn-secondary" onclick="closeModal()"><i class="fa-solid fa-xmark"></i> Close</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('vehicleModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('vehicleModal').classList.remove('open');
+    }
+
+    function nextSlide() {
+      const dots = document.querySelectorAll('.dot').length;
+      currentSlide = (currentSlide + 1) % dots;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      const dots = document.querySelectorAll('.dot').length;
+      currentSlide = (currentSlide - 1 + dots) % dots;
+      updateCarousel();
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      updateCarousel();
+    }
+
+    function updateCarousel() {
+      const inner = document.getElementById('carouselInner');
+      inner.style.transform = `translateX(-${currentSlide * 100}%)`;
+      document.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function contactAboutVehicle(id) {
+      const car = vehicles.find(v => v.id === id);
+      if (car) {
+        window.location.href = `contact.html?vehicle=${car.make}%20${car.model}`;
+      }
+    }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', renderVehicles);
+    document.getElementById('bodySelect').addEventListener('change', renderVehicles);
+    document.getElementById('fuelSelect').addEventListener('change', renderVehicles);
+    document.getElementById('driveSelect').addEventListener('change', renderVehicles);
+    document.getElementById('budgetRange').addEventListener('input', () => {
+      document.getElementById('budgetValue').textContent = `CHF ${parseInt(document.getElementById('budgetRange').value).toLocaleString('de-CH')}`;
+      renderVehicles();
+    });
+
+    // Close modal on backdrop click
+    document.getElementById('vehicleModal').addEventListener('click', (e) => {
+      if (e.target.id === 'vehicleModal') {
+        closeModal();
+      }
+    });
+
+    // Initial render
+    renderVehicles();
+  </script>
+</body>
+</html>

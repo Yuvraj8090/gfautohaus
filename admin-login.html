@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | G&F Autohaus AG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ink: #111827;
+      --muted: #667085;
+      --line: #e4e7ec;
+      --soft: #f5f7fa;
+      --paper: #ffffff;
+      --gold: #c49a25;
+      --gold-dark: #9a7313;
+      --green: #22c55e;
+      --blue: #2563eb;
+      --shadow: 0 22px 55px rgba(17, 24, 39, .12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Roboto", sans-serif;
+      background: linear-gradient(135deg, #111827, #1e2942);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+    }
+
+    .login-container {
+      width: min(420px, 100% - 32px);
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 35px 80px rgba(17, 24, 39, .3);
+      overflow: hidden;
+    }
+
+    .login-header {
+      background: linear-gradient(135deg, var(--ink), #3b4556);
+      color: white;
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      margin: 0 auto 16px;
+    }
+
+    .login-header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .login-header p {
+      margin: 0;
+      color: rgba(255, 255, 255, .8);
+      font-size: 14px;
+    }
+
+    .login-body {
+      padding: 40px 32px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .form-group input {
+      width: 100%;
+      min-height: 46px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-family: "Roboto", sans-serif;
+      font-size: 16px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .form-group input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(196, 154, 37, .12);
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    .remember-forgot a {
+      color: var(--blue);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    .remember-forgot a:hover {
+      color: var(--gold);
+    }
+
+    .login-btn {
+      width: 100%;
+      min-height: 46px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 16px;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .demo-info {
+      background: rgba(37, 99, 235, .08);
+      border: 1px solid rgba(37, 99, 235, .2);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .demo-info strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 8px;
+      font-weight: 900;
+    }
+
+    .demo-info p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .demo-info code {
+      background: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: 700;
+    }
+
+    .footer-link {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-link a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color .2s ease;
+    }
+
+    .footer-link a:hover {
+      color: var(--gold);
+    }
+
+    .error-message {
+      display: none;
+      background: rgba(220, 38, 38, .1);
+      border: 1px solid #dc2626;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      color: #dc2626;
+      font-size: 14px;
+      font-weight: 700;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .error-message.show {
+      display: flex;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        border-radius: 0;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .login-body {
+        flex: 1;
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo"><i class="fa-solid fa-car-side"></i></div>
+      <h1>G&F Autohaus</h1>
+      <p>Admin Portal</p>
+    </div>
+
+    <div class="login-body">
+      <div class="demo-info">
+        <strong><i class="fa-solid fa-info-circle"></i> Demo Credentials</strong>
+        <p>Username: <code>admin</code></p>
+        <p>Password: <code>password123</code></p>
+        <p style="font-size: 12px; margin-top: 8px; font-style: italic;">For demonstration purposes only</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="error-message" id="errorMessage">
+          <i class="fa-solid fa-exclamation-circle"></i>
+          <span id="errorText"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required placeholder="Enter your username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+
+        <div class="remember-forgot">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700;">
+            <input type="checkbox" id="remember" name="remember" style="cursor: pointer; width: 18px; height: 18px;">
+            Remember me
+          </label>
+        </div>
+
+        <button type="submit" class="login-btn">
+          <i class="fa-solid fa-arrow-right"></i> Login to Admin Panel
+        </button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <a href="index.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; text-align: center; color: var(--muted); font-weight: 700; transition: color .2s ease; border-radius: 8px;" onmouseover="this.style.color='var(--ink)'" onmouseout="this.style.color='var(--muted)'">
+        <i class="fa-solid fa-arrow-left"></i> Back to Main Website
+      </a>
+
+      <div class="footer-link">
+        Need help? <a href="contact.html">Contact Support</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMessage = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+
+      // Demo credentials
+      if (username === 'admin' && password === 'password123') {
+        // Store login state in sessionStorage
+        sessionStorage.setItem('gfautohaus_admin_logged_in', 'true');
+        sessionStorage.setItem('gfautohaus_admin_username', username);
+
+        if (document.getElementById('remember').checked) {
+          localStorage.setItem('gfautohaus_admin_remember', 'true');
+        }
+
+        // Redirect to admin panel
+        window.location.href = 'admin-panel.html';
+      } else {
+        errorMessage.classList.add('show');
+        errorText.textContent = 'Invalid username or password. Use "admin" / "password123"';
+        document.getElementById('password').focus();
+      }
+    });
+
+    // Check if user is already logged in
+    if (sessionStorage.getItem('gfautohaus_admin_logged_in')) {
+      window.location.href = 'admin-panel.html';
+    } else if (localStorage.getItem('gfautohaus_admin_remember')) {
+      // Auto-fill username if remember was checked
+      document.getElementById('username').value = 'admin';
+      document.getElementById('remember').checked = true;
+    }
+  </script>
+</body>
+</html>

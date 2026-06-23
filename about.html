@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | G&F Autohaus AG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ink: #111827;
+      --muted: #667085;
+      --line: #e4e7ec;
+      --soft: #f5f7fa;
+      --paper: #ffffff;
+      --gold: #c49a25;
+      --gold-dark: #9a7313;
+      --green: #22c55e;
+      --blue: #2563eb;
+      --shadow: 0 22px 55px rgba(17, 24, 39, .12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Roboto", sans-serif;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f6f8 45%, #ffffff 100%);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+    }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px clamp(18px, 5vw, 72px);
+      background: rgba(255, 255, 255, .86);
+      border-bottom: 1px solid rgba(228, 231, 236, .9);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 10px 30px rgba(17, 24, 39, .05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--ink), #3b4556);
+      box-shadow: 0 10px 20px rgba(17, 24, 39, .18);
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      color: #344054;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 10px 2px;
+      transition: color .2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 4px;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .22s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 850;
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+    }
+
+    .icon-btn {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+    }
+
+    .hero {
+      min-height: 70vh;
+      display: grid;
+      align-items: center;
+      padding: 112px clamp(18px, 5vw, 72px) 46px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .78) 42%, rgba(255, 255, 255, .24) 78%),
+        url("https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=2200&q=85") center / cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 760px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid rgba(196, 154, 37, .35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .82);
+      color: #805f12;
+      font-weight: 850;
+      font-size: 13px;
+    }
+
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(48px, 8vw, 72px);
+      line-height: .96;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    h2 {
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.2;
+      margin: 0 0 24px;
+      font-weight: 900;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 900;
+      margin: 0 0 12px;
+    }
+
+    p {
+      line-height: 1.7;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    section {
+      padding: 84px clamp(18px, 5vw, 72px);
+    }
+
+    .section-container {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: 0 16px 42px rgba(17, 24, 39, .08);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-7px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--ink), #4b5565);
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .team-member {
+      text-align: center;
+    }
+
+    .team-member img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .team-member h4 {
+      margin: 0 0 4px;
+      font-weight: 900;
+    }
+
+    .team-member p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .timeline-item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 60px;
+      top: 100%;
+      width: 2px;
+      height: 32px;
+      background: var(--line);
+    }
+
+    .timeline-year {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--gold);
+      padding-top: 8px;
+    }
+
+    .timeline-content h4 {
+      margin-top: 0;
+    }
+
+    footer {
+      padding: 62px clamp(18px, 5vw, 72px) 28px;
+      color: #f8fafc;
+      background: linear-gradient(135deg, #111827, #242f42);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      max-width: 1220px;
+      margin: 0 auto 40px;
+    }
+
+    footer h3, footer h4 {
+      margin: 0 0 14px;
+      font-weight: 900;
+    }
+
+    footer p, footer li {
+      margin: 0 0 9px;
+      color: #cbd5e1;
+      line-height: 1.65;
+      list-style: none;
+    }
+
+    footer ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-bottom {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .bg-soft {
+      background: rgba(245, 247, 250, .76);
+    }
+
+    @media (max-width: 1050px) {
+      .nav-links {
+        display: none;
+      }
+
+      .grid-2,
+      .grid-3,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        padding: 12px 14px;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .hero {
+        min-height: 60vh;
+        padding-top: 92px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><i class="fa-solid fa-car-side"></i></span>
+      G&F <span>Autohaus</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="services.html">Services</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="admin-login.html" class="primary-btn"><i class="fa-solid fa-lock"></i> Admin</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow"><i class="fa-solid fa-handshake"></i> Our Story</span>
+        <h1>Trusted Premium Vehicle Brokerage Since 2015</h1>
+        <p>G&F Autohaus AG is dedicated to making premium vehicle acquisition transparent, straightforward, and tailored to your needs.</p>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <div class="grid-2">
+        <div>
+          <h2>About G&F Autohaus</h2>
+          <p>Founded with a mission to revolutionize how premium vehicles are bought and sold in Switzerland, G&F Autohaus AG has established itself as a trusted partner for discerning drivers seeking clarity in the automotive marketplace.</p>
+          <p>Our team combines decades of automotive expertise with modern technology to deliver transparent market valuations, seamless financing coordination, and personalized service.</p>
+          <p>Based in Root, Switzerland, we serve clients across the country with a focus on premium makes including BMW, Mercedes-Benz, Porsche, Tesla, and more.</p>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=600&q=80"
+               alt="Premium cars showroom" style="border-radius: 8px; width: 100%; box-shadow: 0 22px 55px rgba(17, 24, 39, .12);" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container bg-soft" style="padding: 84px clamp(18px, 5vw, 72px);">
+      <h2 style="text-align: center; margin-bottom: 48px;">Our Core Values</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon"><i class="fa-solid fa-handshake"></i></div>
+          <h3>Transparency</h3>
+          <p>No hidden fees, no surprises. Every vehicle, price, and process is communicated with complete honesty.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fa-solid fa-star"></i></div>
+          <h3>Excellence</h3>
+          <p>Premium quality vehicles and exceptional service are the foundation of everything we do.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fa-solid fa-headset"></i></div>
+          <h3>Personal Service</h3>
+          <p>Your needs come first. We provide dedicated support throughout your entire automotive journey.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2 style="text-align: center; margin-bottom: 48px;">Why Choose G&F Autohaus?</h2>
+      <div class="grid-2">
+        <div>
+          <h3><i class="fa-solid fa-check" style="color: var(--green); margin-right: 12px;"></i>24-Hour Response</h3>
+          <p>Your inquiries deserve prompt attention. We respond to all customer inquiries within 24 hours.</p>
+
+          <h3><i class="fa-solid fa-check" style="color: var(--green); margin-right: 12px;"></i>Premium Selection</h3>
+          <p>Curated inventory from 12+ premium brands, carefully selected and inspected.</p>
+
+          <h3><i class="fa-solid fa-check" style="color: var(--green); margin-right: 12px;"></i>Trade-In Expertise</h3>
+          <p>Transparent market valuations for your current vehicle using current market data.</p>
+        </div>
+        <div>
+          <h3><i class="fa-solid fa-check" style="color: var(--green); margin-right: 12px;"></i>Financing Support</h3>
+          <p>Compare and coordinate leasing, financing, and insurance with trusted partners.</p>
+
+          <h3><i class="fa-solid fa-check" style="color: var(--green); margin-right: 12px;"></i>Partner Network</h3>
+          <p>Work with certified repair shops for inspections, detailing, and preparation.</p>
+
+          <h3><i class="fa-solid fa-check" style="color: var(--green); margin-right: 12px;"></i>Swiss Support</h3>
+          <p>Local expertise based in Root, Switzerland with multilingual support.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container bg-soft" style="padding: 84px clamp(18px, 5vw, 72px);">
+      <h2 style="text-align: center; margin-bottom: 48px;">Our Journey</h2>
+      <div class="section-container">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">2015</div>
+            <div class="timeline-content">
+              <h4>Company Founded</h4>
+              <p>G&F Autohaus AG was established with a mission to bring transparency to premium vehicle brokerage in Switzerland.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-year">2017</div>
+            <div class="timeline-content">
+              <h4>Premium Partnerships</h4>
+              <p>Established relationships with leading financing institutions and certified repair networks across Switzerland.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-year">2019</div>
+            <div class="timeline-content">
+              <h4>Digital Platform Launch</h4>
+              <p>Launched our online showroom platform to provide seamless browsing and inquiry management for customers worldwide.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-year">2022</div>
+            <div class="timeline-content">
+              <h4>Electric Vehicle Focus</h4>
+              <p>Expanded inventory to include premium electric vehicles as demand for sustainable transportation grows.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-year">2024</div>
+            <div class="timeline-content">
+              <h4>Enhanced Services</h4>
+              <p>Introduced advanced search filtering, multilingual support, and personalized customer portals.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2 style="text-align: center; margin-bottom: 48px;">Our Team</h2>
+      <div class="grid-3">
+        <div class="team-member card" style="border: none; box-shadow: none; padding: 0;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Team member">
+          <h4>Marcus Keller</h4>
+          <p>Founder & CEO</p>
+          <p style="color: var(--muted); font-size: 14px; margin-top: 8px;">25+ years in premium automotive with expertise in European market dynamics.</p>
+        </div>
+
+        <div class="team-member card" style="border: none; box-shadow: none; padding: 0;">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80" alt="Team member">
+          <h4>Sarah Mueller</h4>
+          <p>Head of Sales</p>
+          <p style="color: var(--muted); font-size: 14px; margin-top: 8px;">Specializes in matching clients with perfect vehicles and financing solutions.</p>
+        </div>
+
+        <div class="team-member card" style="border: none; box-shadow: none; padding: 0;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Team member">
+          <h4>Thomas Schneider</h4>
+          <p>Operations Manager</p>
+          <p style="color: var(--muted); font-size: 14px; margin-top: 8px;">Ensures smooth coordination of all dealer operations and customer satisfaction.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container" style="text-align: center; padding: 84px clamp(18px, 5vw, 72px);">
+      <h2 style="margin-bottom: 24px;">Ready to Find Your Perfect Vehicle?</h2>
+      <p style="max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 32px;">Browse our curated selection of premium vehicles or contact our team directly for personalized assistance.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="inventory.html" class="primary-btn"><i class="fa-solid fa-magnifying-glass"></i> Browse Vehicles</a>
+        <a href="contact.html" class="primary-btn" style="background: var(--paper); color: var(--ink); border: 1px solid var(--line);"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h3>G&F Autohaus AG</h3>
+        <p>Premium vehicle brokerage for buying, selling, trade-ins, financing, insurance, and partner repair coordination.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <p>Oberfeld 4<br />6037 Root<br />Switzerland</p>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>Mon-Fri: 08:00-18:30</li>
+          <li>Sat: 09:00-16:00</li>
+          <li>Sun: Closed</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>079 722 70 70<br />gfautohaus@outlook.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 G&F Autohaus AG. Premium Vehicle Brokerage.</div>
+  </footer>
+</body>
+</html>
