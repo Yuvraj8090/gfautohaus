@@ -582,7 +582,10 @@
       <div id="dashboard" class="tab-content active">
         <div class="content-header">
           <h1>Dashboard</h1>
-          <a href="#" onclick="switchTab('add-vehicle')" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Vehicle</a>
+          <div style="display:flex;gap:10px;">
+            <button onclick="resetInventory()" class="btn-secondary"><i class="fa-solid fa-rotate-left"></i> Reset to Defaults</button>
+            <a href="#" onclick="switchTab('add-vehicle')" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Vehicle</a>
+          </div>
         </div>
 
         <div class="dashboard-grid">
@@ -644,6 +647,7 @@
                 <th>Price</th>
                 <th>Fuel</th>
                 <th>Mileage</th>
+                <th>Photos</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -778,7 +782,7 @@
 
   <!-- Edit Vehicle Modal -->
   <div class="modal-backdrop" id="editModal">
-    <div class="modal">
+    <div class="modal" style="width: min(720px, 100%);">
       <div class="modal-header">
         <h2>Edit Vehicle</h2>
         <button class="close-btn" onclick="closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -799,7 +803,7 @@
               <input type="number" id="editYear">
             </div>
             <div class="form-group">
-              <label>Price</label>
+              <label>Price (CHF)</label>
               <input type="number" id="editPrice">
             </div>
             <div class="form-group">
@@ -809,6 +813,18 @@
             <div class="form-group">
               <label>Power</label>
               <input type="text" id="editPower">
+            </div>
+          </div>
+
+          <!-- Image Management -->
+          <div style="margin-bottom: 20px;">
+            <label style="font-weight: 900; font-size: 14px; display: block; margin-bottom: 12px;">
+              <i class="fa-solid fa-images" style="color: var(--gold);"></i> Photos
+            </label>
+            <div id="editImageList" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; min-height: 70px; padding: 8px; background: var(--soft); border-radius: 8px; border: 1px solid var(--line);"></div>
+            <div style="display: flex; gap: 8px;">
+              <input type="url" id="newImageUrl" placeholder="Paste image URL and click Add…" style="flex: 1; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; outline: none;">
+              <button type="button" onclick="addEditImage()" class="btn-primary btn-small" style="white-space: nowrap;"><i class="fa-solid fa-plus"></i> Add Photo</button>
             </div>
           </div>
 
@@ -880,17 +896,39 @@
       const tbody = document.getElementById('vehiclesBody');
       tbody.innerHTML = vehicles.map(v => `
         <tr>
-          <td>${v.make} ${v.model}</td>
+          <td>
+            <div class="vehicle-info-cell">
+              <img src="${(v.images||[])[0]||''}" class="vehicle-thumbnail" onerror="this.style.display='none'">
+              <div>
+                <div class="vehicle-name">${v.make}</div>
+                <div style="font-size:12px;color:var(--muted);">${v.model}</div>
+              </div>
+            </div>
+          </td>
           <td>${v.year}</td>
           <td>CHF ${v.price.toLocaleString('de-CH')}</td>
           <td>${v.fuel}</td>
           <td>${v.km}</td>
           <td>
-            <button class="btn-secondary btn-small" onclick="editVehicle(${v.id})"><i class="fa-solid fa-edit"></i></button>
+            <span style="background:rgba(196,154,37,.12);color:var(--gold-dark);font-size:12px;font-weight:800;padding:3px 8px;border-radius:4px;">
+              <i class="fa-solid fa-image"></i> ${(v.images||[]).length}
+            </span>
+          </td>
+          <td>
+            <button class="btn-secondary btn-small" onclick="editVehicle(${v.id})"><i class="fa-solid fa-edit"></i> Edit</button>
             <button class="btn-danger btn-small" onclick="deleteVehicle(${v.id})"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>
       `).join('');
+    }
+
+    function resetInventory() {
+      if (confirm('Reset all vehicles to default data? Any custom changes will be lost.')) {
+        resetVehiclesToDefault();
+        vehicles = getVehiclesFromStorage();
+        updateDashboard();
+        showAlert('Inventory reset to defaults!', 'success');
+      }
     }
 
     function renderInquiries() {
@@ -965,17 +1003,69 @@
       setTimeout(() => switchTab('vehicles'), 1500);
     });
 
+    let editingImages = [];
+
+    function renderEditImageList() {
+      const container = document.getElementById('editImageList');
+      if (editingImages.length === 0) {
+        container.innerHTML = '<span style="color: var(--muted); font-size: 13px; margin: auto;">No photos yet — add a URL below</span>';
+        return;
+      }
+      container.innerHTML = editingImages.map((url, i) => `
+        <div style="position: relative; flex-shrink: 0;">
+          <img src="${url}" alt="Photo ${i+1}"
+               style="width: 90px; height: 64px; object-fit: cover; border-radius: 6px; border: 2px solid ${i === 0 ? 'var(--gold)' : 'var(--line)'};"
+               onerror="this.style.background='#eee';this.src=''">
+          ${i === 0 ? '<span style="position:absolute;top:3px;left:3px;background:var(--gold);color:#fff;font-size:10px;font-weight:900;padding:1px 5px;border-radius:4px;">COVER</span>' : ''}
+          <button type="button" onclick="removeEditImage(${i})"
+                  style="position:absolute;top:3px;right:3px;background:rgba(220,38,38,.85);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:grid;place-items:center;line-height:1;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          ${i > 0 ? `<button type="button" onclick="moveEditImageFirst(${i})" title="Set as cover"
+                  style="position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:4px;width:20px;height:20px;font-size:10px;cursor:pointer;display:grid;place-items:center;">
+            <i class="fa-solid fa-star"></i>
+          </button>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function addEditImage() {
+      const url = document.getElementById('newImageUrl').value.trim();
+      if (!url) return;
+      editingImages.push(url);
+      document.getElementById('newImageUrl').value = '';
+      renderEditImageList();
+    }
+
+    function removeEditImage(i) {
+      editingImages.splice(i, 1);
+      renderEditImageList();
+    }
+
+    function moveEditImageFirst(i) {
+      const [img] = editingImages.splice(i, 1);
+      editingImages.unshift(img);
+      renderEditImageList();
+    }
+
+    document.getElementById('newImageUrl').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); addEditImage(); }
+    });
+
     function editVehicle(id) {
       const vehicle = vehicles.find(v => v.id === id);
       if (!vehicle) return;
 
       editingVehicleId = id;
+      editingImages = [...(vehicle.images || [])];
+
       document.getElementById('editMake').value = vehicle.make;
       document.getElementById('editModel').value = vehicle.model;
       document.getElementById('editYear').value = vehicle.year;
       document.getElementById('editPrice').value = vehicle.price;
       document.getElementById('editKm').value = vehicle.km;
       document.getElementById('editPower').value = vehicle.power;
+      renderEditImageList();
 
       document.getElementById('editModal').classList.add('open');
     }
@@ -983,6 +1073,7 @@
     function closeEditModal() {
       document.getElementById('editModal').classList.remove('open');
       editingVehicleId = null;
+      editingImages = [];
     }
 
     document.getElementById('editForm').addEventListener('submit', function(e) {
@@ -995,10 +1086,12 @@
         vehicle.price = parseInt(document.getElementById('editPrice').value);
         vehicle.km = document.getElementById('editKm').value;
         vehicle.power = document.getElementById('editPower').value;
+        vehicle.images = editingImages.length > 0 ? editingImages : vehicle.images;
         saveVehiclesToStorage(vehicles);
         showAlert('Vehicle updated successfully!', 'success');
         closeEditModal();
         renderVehiclesTable();
+        updateDashboard();
       }
     });
 

@@ -394,8 +394,8 @@
     /* Image Carousel */
     .carousel {
       width: 100%;
-      background: #eef2f7;
-      border-radius: 8px;
+      background: #0d1117;
+      border-radius: 10px;
       overflow: hidden;
       position: relative;
     }
@@ -403,13 +403,13 @@
     .carousel-container {
       position: relative;
       width: 100%;
-      aspect-ratio: 4/3;
+      aspect-ratio: 16/10;
       overflow: hidden;
     }
 
     .carousel-inner {
       display: flex;
-      transition: transform .45s ease;
+      transition: transform .4s cubic-bezier(.4,0,.2,1);
       height: 100%;
     }
 
@@ -428,54 +428,79 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0, 0, 0, .5);
+      background: rgba(0, 0, 0, .55);
       color: white;
-      border: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.18);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       cursor: pointer;
       display: grid;
       place-items: center;
-      font-size: 18px;
-      transition: background .2s ease;
+      font-size: 14px;
+      transition: background .2s ease, transform .2s ease;
       z-index: 10;
+      backdrop-filter: blur(6px);
     }
 
     .carousel-nav:hover {
-      background: rgba(0, 0, 0, .7);
+      background: rgba(0, 0, 0, .8);
+      transform: translateY(-50%) scale(1.1);
     }
 
-    .carousel-prev {
-      left: 12px;
-    }
+    .carousel-prev { left: 12px; }
+    .carousel-next { right: 12px; }
 
-    .carousel-next {
+    .carousel-counter {
+      position: absolute;
+      bottom: 10px;
       right: 12px;
+      background: rgba(0,0,0,.55);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      z-index: 10;
     }
 
-    .carousel-dots {
+    .carousel-thumbs {
       display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      background: rgba(0, 0, 0, .1);
+      gap: 6px;
+      padding: 8px;
+      background: #0d1117;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
 
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .5);
-      border: 2px solid rgba(255, 255, 255, .8);
+    .carousel-thumbs::-webkit-scrollbar { display: none; }
+
+    .thumb {
+      flex-shrink: 0;
+      width: 68px;
+      height: 48px;
+      border-radius: 6px;
+      overflow: hidden;
       cursor: pointer;
+      border: 2px solid transparent;
+      opacity: .55;
       transition: all .2s ease;
     }
 
-    .dot.active {
-      background: white;
-      width: 28px;
-      border-radius: 999px;
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb.active {
+      border-color: var(--gold);
+      opacity: 1;
+    }
+
+    .thumb:hover {
+      opacity: .85;
     }
 
     .vehicle-details {
@@ -821,13 +846,14 @@
           <div class="carousel">
             <div class="carousel-container">
               <div class="carousel-inner" id="carouselInner">
-                ${images.map(img => `<div class="carousel-item"><img src="${img}" alt="${car.make}"></div>`).join('')}
+                ${images.map(img => `<div class="carousel-item"><img src="${img}" alt="${car.make}" loading="lazy"></div>`).join('')}
               </div>
               <button class="carousel-nav carousel-prev" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
               <button class="carousel-nav carousel-next" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+              <div class="carousel-counter" id="carouselCounter">1 / ${images.length}</div>
             </div>
-            <div class="carousel-dots" id="carouselDots">
-              ${images.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('')}
+            <div class="carousel-thumbs" id="carouselThumbs">
+              ${images.map((img, i) => `<div class="thumb ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"><img src="${img}" alt="Photo ${i+1}"></div>`).join('')}
             </div>
           </div>
         </div>
@@ -887,9 +913,13 @@
     function updateCarousel() {
       const inner = document.getElementById('carouselInner');
       inner.style.transform = `translateX(-${currentSlide * 100}%)`;
-      document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-      });
+      const thumbs = document.querySelectorAll('.thumb');
+      thumbs.forEach((t, i) => t.classList.toggle('active', i === currentSlide));
+      const counter = document.getElementById('carouselCounter');
+      if (counter) counter.textContent = `${currentSlide + 1} / ${thumbs.length}`;
+      // scroll active thumb into view
+      const activeThumb = thumbs[currentSlide];
+      if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
 
     function contactAboutVehicle(id) {

@@ -14,7 +14,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.autoscout24.ch/public/listing/17/20489017/341897558.jpeg?w=768",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1616422285623-13ff0162193c?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -31,7 +34,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.autoscout24.ch/public/listing/76/20449076/629103606.jpg?w=768",
-      "https://images.unsplash.com/photo-1560958089-b8a63dd52183?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1560958089-b8a63dd52183?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1571127236794-81c1e7df0e1f?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -48,13 +54,16 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.autoscout24.ch/public/listing/64/20449064/2041456300.jpg?w=768",
-      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1617654112368-307921291f42?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
     id: 20449049,
     make: "JEEP",
-    model: "Limited 2.4",
+    model: "Cherokee Limited 2.4",
     year: 2016,
     price: 7900,
     body: "SUV",
@@ -65,7 +74,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.autoscout24.ch/public/listing/49/20449049/547251284.jpg?w=768",
-      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -82,7 +94,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.autoscout24.ch/public/listing/265/20386265/1304556399.JPG?w=768",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1616422285623-13ff0162193c?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -99,7 +114,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.autoscout24.ch/public/listing/317/20381317/121115819.jpg?w=768",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1556189250-72ba954cfc2b?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -116,7 +134,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1560958089-b8a63dd52183?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1560958089-b8a63dd52183?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1571127236794-81c1e7df0e1f?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -133,7 +154,10 @@ const vehiclesData = [
     transmission: "Manual",
     images: [
       "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1548012435-b35ed87cc1fc?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1616422285623-13ff0162193c?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -150,7 +174,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1556189250-72ba954cfc2b?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -167,7 +194,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1560958089-b8a63dd52183?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1571127236794-81c1e7df0e1f?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -184,7 +214,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -201,7 +234,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -218,7 +254,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -235,7 +274,10 @@ const vehiclesData = [
     transmission: "Automatic",
     images: [
       "https://images.unsplash.com/photo-1617654112368-307921291f42?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c3febda46?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=768&q=80"
     ]
   },
   {
@@ -252,7 +294,10 @@ const vehiclesData = [
     transmission: "Manual",
     images: [
       "https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=768&q=80",
-      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80"
+      "https://images.unsplash.com/photo-1549399542-7e3f8b83ad45?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1616422285623-13ff0162193c?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=768&q=80",
+      "https://images.unsplash.com/photo-1548012435-b35ed87cc1fc?auto=format&fit=crop&w=768&q=80"
     ]
   }
 ];
@@ -260,11 +305,18 @@ const vehiclesData = [
 // LocalStorage management for vehicles
 function getVehiclesFromStorage() {
   const stored = localStorage.getItem('gfautohaus_vehicles');
-  return stored ? JSON.parse(stored) : vehiclesData;
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) {}
+  }
+  return vehiclesData;
 }
 
 function saveVehiclesToStorage(vehicles) {
   localStorage.setItem('gfautohaus_vehicles', JSON.stringify(vehicles));
+}
+
+function resetVehiclesToDefault() {
+  saveVehiclesToStorage(vehiclesData);
 }
 
 function initializeVehicles() {

@@ -7,6 +7,7 @@ G&A with cars popup
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>G&F Autohaus AG | Premium Vehicle Brokerage</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+  <script src="data.js"></script>
   <style>
     :root {
       --ink: #111827;
@@ -773,6 +774,112 @@ G&A with cars popup
       color: var(--ink);
       font-weight: 800;
     }
+    /* Wide vehicle detail modal */
+    .modal-wide {
+      width: min(940px, 100%);
+      max-height: min(90vh, 900px);
+    }
+    .modal-detail-body {
+      padding: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 700px) {
+      .modal-detail-body {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* Carousel */
+    .carousel {
+      background: #0d1117;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+    }
+    .carousel-inner {
+      display: flex;
+      transition: transform .4s cubic-bezier(.4,0,.2,1);
+      height: 100%;
+    }
+    .carousel-item {
+      min-width: 100%;
+      height: 100%;
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,.55);
+      color: white;
+      border: 1px solid rgba(255,255,255,.18);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      transition: background .2s;
+      z-index: 10;
+      backdrop-filter: blur(6px);
+    }
+    .carousel-nav:hover { background: rgba(0,0,0,.8); }
+    .carousel-prev { left: 10px; }
+    .carousel-next { right: 10px; }
+    .carousel-counter {
+      position: absolute;
+      bottom: 9px;
+      right: 10px;
+      background: rgba(0,0,0,.55);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      z-index: 10;
+    }
+    .carousel-thumbs {
+      display: flex;
+      gap: 5px;
+      padding: 7px;
+      background: #0d1117;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .carousel-thumbs::-webkit-scrollbar { display: none; }
+    .thumb {
+      flex-shrink: 0;
+      width: 62px;
+      height: 44px;
+      border-radius: 5px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: .5;
+      transition: all .2s;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb.active { border-color: var(--gold); opacity: 1; }
+    .thumb:hover { opacity: .8; }
+    .detail-right {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow-y: auto;
+      max-height: 500px;
+    }
     @media (max-width: 1050px) {
       .nav-links {
         display: none;
@@ -1035,36 +1142,20 @@ G&A with cars popup
 
   <!-- Technical Details Specifications Popup Modal -->
   <div class="modal-backdrop" id="specModal" role="dialog" aria-modal="true" aria-labelledby="specTitle">
-    <div class="modal">
+    <div class="modal modal-wide">
       <div class="modal-header">
         <h3 id="specTitle">Vehicle Specifications</h3>
         <button class="icon-btn" data-close="specModal" aria-label="Close details"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="modal-body" id="specModalBody">
-        <!-- Structured data injected inside setup loop dynamically -->
+      <div class="modal-detail-body" id="specModalBody">
+        <!-- Carousel + specs injected dynamically -->
       </div>
     </div>
   </div>
 
   <script>
-    // 1. Dataset - Fully comprehensive data matching current live showroom portfolio
-    const vehicles = [
-      { id: 20489017, make: "SKODA", model: "Octavia Combi 2.0 TDI Style 4x4 DSG", year: 2015, price: 9900, body: "Estate", fuel: "Diesel", drive: "AWD", km: "160'700 km", power: "184 PS (135 kW)", transmission: "Halbautomatisches Getriebe", img: "https://images.autoscout24.ch/public/listing/17/20489017/341897558.jpeg?w=768" },
-      { id: 20449076, make: "TESLA", model: "Model S 85", year: 2016, price: 11900, body: "Sedan", fuel: "Electric", drive: "RWD", km: "170'950 km", power: "388 PS (285 kW)", transmission: "Automat", img: "https://images.autoscout24.ch/public/listing/76/20449076/629103606.jpg?w=768" },
-      { id: 20449064, make: "VW", model: "Golf 1.4 TSI Comfortline DSG", year: 2013, price: 8900, body: "Hatchback", fuel: "Petrol", drive: "FWD", km: "157'098 km", power: "140 PS (103 kW)", transmission: "Halbautomatisches Getriebe", img: "https://images.autoscout24.ch/public/listing/64/20449064/2041456300.jpg?w=768" },
-      { id: 20449049, make: "JEEP", model: "Limited 2.4", year: 2016, price: 7900, body: "SUV", fuel: "Petrol", drive: "AWD", km: "179'300 km", power: "177 PS (130 kW)", transmission: "Halbautomatisches Getriebe", img: "https://images.autoscout24.ch/public/listing/49/20449049/547251284.jpg?w=768" },
-      { id: 20386265, make: "SEAT", model: "Leon ST 1.8 TSI FR DSG", year: 2014, price: 10900, body: "Estate", fuel: "Petrol", drive: "FWD", km: "108'500 km", power: "180 PS (132 kW)", transmission: "Halbautomatisches Getriebe", img: "https://images.autoscout24.ch/public/listing/265/20386265/1304556399.JPG?w=768" },
-      { id: 20381317, make: "BMW", model: "M440i xDrive Cabriolet", year: 2021, price: 45900, body: "Convertible", fuel: "Mild Hybrid Petrol", drive: "AWD", km: "76'500 km", power: "374 PS (275 kW)", transmission: "Automat", img: "https://images.autoscout24.ch/public/listing/317/20381317/121115819.jpg?w=768" },
-      { id: 30501731, make: "TESLA", model: "Model 3 Long Range Dual Motor AWD", year: 2019, price: 16900, body: "Sedan", fuel: "Electric", drive: "AWD", km: "144'500 km", power: "462 PS (340 kW)", transmission: "Automat", img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501732, make: "MERCEDES-BENZ", model: "A 170 Classic Edition A", year: 2008, price: 4900, body: "Hatchback", fuel: "Petrol", drive: "FWD", km: "145'900 km", power: "115 PS (85 kW)", transmission: "Stufenlos", img: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501733, make: "BMW", model: "i7 xDrive 60 M Sport", year: 2022, price: 74900, body: "Sedan", fuel: "Electric", drive: "AWD", km: "42'000 km", power: "544 PS (400 kW)", transmission: "Automat", img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501734, make: "TESLA", model: "Model X 100 D Performance", year: 2017, price: 24900, body: "SUV", fuel: "Electric", drive: "AWD", km: "161'300 km", power: "772 PS (568 kW)", transmission: "Automat", img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501735, make: "PORSCHE", model: "Macan Turbo PDK", year: 2015, price: 43900, body: "SUV", fuel: "Petrol", drive: "AWD", km: "75'500 km", power: "400 PS (294 kW)", transmission: "Halbautomatisches Getriebe", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501736, make: "BMW", model: "X5 xDrive 48V 30d M Sport", year: 2024, price: 72900, body: "SUV", fuel: "Mild Hybrid Diesel", drive: "AWD", km: "61'500 km", power: "286 PS (210 kW)", transmission: "Automat", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501737, make: "LAND ROVER", model: "Range Rover Velar P 250 S", year: 2018, price: 26900, body: "SUV", fuel: "Petrol", drive: "AWD", km: "114'500 km", power: "250 PS (184 kW)", transmission: "Automat", img: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501738, make: "VW", model: "Tiguan 2.0TSI R 4Motion DSG", year: 2023, price: 39900, body: "SUV", fuel: "Petrol", drive: "AWD", km: "27'500 km", power: "319 PS (235 kW)", transmission: "Halbautomatisches Getriebe", img: "https://images.unsplash.com/photo-1617654112368-307921291f42?auto=format&fit=crop&w=768&q=80" },
-      { id: 30501739, make: "FIAT", model: "500 1.0 N3 MildHybrid Lounge", year: 2023, price: 13900, body: "Hatchback", fuel: "Mild Hybrid Petrol", drive: "FWD", km: "37'996 km", power: "70 PS (51 kW)", transmission: "Schaltgetriebe manuell", img: "https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=768&q=80" }
-    ];
+    // 1. Dataset — loaded from data.js (supports multiple images per car)
+    const vehicles = getVehiclesFromStorage();
 
     // 2. Localization Setup
     let currentLang = 'EN';
@@ -1164,19 +1255,23 @@ G&A with cars popup
     // 4. Cart State
     let cart = [];
     
+    function carCoverImg(car) {
+      return (car.images && car.images.length) ? car.images[0] : (car.img || '');
+    }
+
     function updateCartUI() {
       const countEl = document.getElementById('cartCount');
       countEl.innerText = cart.length;
-      
+
       const itemsEl = document.getElementById('cartItems');
       itemsEl.innerHTML = '';
-      
+
       let total = 0;
       cart.forEach((car, index) => {
         total += car.price;
         itemsEl.innerHTML += `
           <div class="cart-row">
-            <img src="${car.img}" alt="${car.make}">
+            <img src="${carCoverImg(car)}" alt="${car.make}">
             <div>
               <h4>${car.make} ${car.model}</h4>
               <p>CHF ${car.price.toLocaleString('de-CH')} | ${car.year}</p>
@@ -1191,19 +1286,20 @@ G&A with cars popup
     function addToCart(id, event) {
       const car = vehicles.find(v => v.id === id);
       if (!car) return;
-      
-      playTone('sine', 523.25, 0.15, 0.1); 
+
+      playTone('sine', 523.25, 0.15, 0.1);
       setTimeout(() => playTone('sine', 659.25, 0.2, 0.1), 80);
 
       // Animation elements
       if (event && event.target) {
         const btn = event.target.closest('button');
-        const card = btn.closest('.vehicle-card');
-        const img = card.querySelector('img');
-        const rect = img.getBoundingClientRect();
+        const card = btn ? btn.closest('.vehicle-card') : null;
+        const img = card ? card.querySelector('img') : null;
+        const rect = img ? img.getBoundingClientRect() : null;
+        if (!rect) { cart.push(car); updateCartUI(); return; }
         
         const fly = document.createElement('img');
-        fly.src = img.src;
+        fly.src = carCoverImg(car);
         fly.className = 'fly-car';
         fly.style.top = rect.top + 'px';
         fly.style.left = rect.left + 'px';
@@ -1232,37 +1328,94 @@ G&A with cars popup
       updateCartUI();
     }
 
-    // New Function: Launch vehicle specific metrics breakdown popups
+    // Vehicle detail modal with full image carousel + thumbnail strip
+    let specSlide = 0;
+    let specImages = [];
+
     window.openVehicleSpecs = function(id) {
       const car = vehicles.find(v => v.id === id);
       if (!car) return;
-      
+
       playTone('sine', 440, 0.12, 0.08);
+      specSlide = 0;
+      specImages = (car.images && car.images.length) ? car.images : [car.img || ''];
+
       document.getElementById('specTitle').innerText = `${car.make} ${car.model}`;
-      
+
       const modalBody = document.getElementById('specModalBody');
       modalBody.innerHTML = `
-        <img src="${car.img}" style="width:100%; border-radius:8px; aspect-ratio:4/3; object-fit:cover; margin-bottom:16px; box-shadow:0 4px 12px rgba(0,0,0,0.1);" alt="${car.make}" />
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <span style="font-size:24px; font-weight:950; color:var(--gold-dark)">CHF ${car.price.toLocaleString('de-CH')}</span>
-          <span style="background:var(--soft); padding:6px 12px; border-radius:999px; font-weight:800; font-size:14px; border:1px solid var(--line)">Model ID: ${car.id}</span>
+        <!-- LEFT: Carousel -->
+        <div>
+          <div class="carousel">
+            <div class="carousel-container">
+              <div class="carousel-inner" id="specCarouselInner">
+                ${specImages.map(img => `<div class="carousel-item"><img src="${img}" alt="${car.make}" loading="lazy"></div>`).join('')}
+              </div>
+              <button class="carousel-nav carousel-prev" onclick="specPrev()"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="carousel-nav carousel-next" onclick="specNext()"><i class="fa-solid fa-chevron-right"></i></button>
+              <div class="carousel-counter" id="specCounter">1 / ${specImages.length}</div>
+            </div>
+            <div class="carousel-thumbs" id="specThumbs">
+              ${specImages.map((img, i) => `<div class="thumb ${i===0?'active':''}" onclick="specGoto(${i})"><img src="${img}" alt="Photo ${i+1}"></div>`).join('')}
+            </div>
+          </div>
         </div>
-        <table class="spec-table">
-          <tr><td class="label">Brand Make</td><td class="value">${car.make}</td></tr>
-          <tr><td class="label">Production Year</td><td class="value">${car.year}</td></tr>
-          <tr><td class="label">Body Layout Type</td><td class="value">${car.body}</td></tr>
-          <tr><td class="label">Fuel / Power Core</td><td class="value">${car.fuel}</td></tr>
-          <tr><td class="label">Drivetrain System</td><td class="value">${car.drive}</td></tr>
-          <tr><td class="label">Odometer Range</td><td class="value">${car.km}</td></tr>
-          <tr><td class="label">Engine Performance</td><td class="value">${car.power}</td></tr>
-          <tr><td class="label">Transmission Type</td><td class="value">${car.transmission}</td></tr>
-        </table>
-        <button class="primary-btn" style="width:100%; margin-top:20px;" onclick="document.getElementById('specModal').classList.remove('open'); addToCart(${car.id}, null);">
-          <i class="fa-solid fa-plus"></i> Add to Inquiry List
-        </button>
+
+        <!-- RIGHT: Details -->
+        <div class="detail-right">
+          <div>
+            <div style="font-size:28px;font-weight:950;color:var(--gold-dark);margin-bottom:6px;">CHF ${car.price.toLocaleString('de-CH')}</div>
+            <div style="font-size:13px;color:var(--muted);font-weight:700;">${car.year} · ${car.body} · ${car.km}</div>
+          </div>
+          <table class="spec-table">
+            <tr><td class="label">Brand</td><td class="value">${car.make}</td></tr>
+            <tr><td class="label">Model</td><td class="value">${car.model}</td></tr>
+            <tr><td class="label">Year</td><td class="value">${car.year}</td></tr>
+            <tr><td class="label">Body Type</td><td class="value">${car.body}</td></tr>
+            <tr><td class="label">Fuel</td><td class="value">${car.fuel}</td></tr>
+            <tr><td class="label">Drive</td><td class="value">${car.drive}</td></tr>
+            <tr><td class="label">Mileage</td><td class="value">${car.km}</td></tr>
+            <tr><td class="label">Power</td><td class="value">${car.power}</td></tr>
+            <tr><td class="label">Transmission</td><td class="value">${car.transmission || '—'}</td></tr>
+          </table>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="primary-btn" style="flex:1;min-width:130px;" onclick="document.getElementById('specModal').classList.remove('open'); addToCart(${car.id}, null);">
+              <i class="fa-solid fa-plus"></i> Add to Inquiry
+            </button>
+            <button class="ghost-btn" style="flex:1;min-width:130px;" onclick="document.getElementById('specModal').classList.remove('open');">
+              <i class="fa-solid fa-xmark"></i> Close
+            </button>
+          </div>
+        </div>
       `;
       document.getElementById('specModal').classList.add('open');
     };
+
+    function specUpdateCarousel() {
+      const inner = document.getElementById('specCarouselInner');
+      if (!inner) return;
+      inner.style.transform = `translateX(-${specSlide * 100}%)`;
+      document.querySelectorAll('#specThumbs .thumb').forEach((t, i) => t.classList.toggle('active', i === specSlide));
+      const counter = document.getElementById('specCounter');
+      if (counter) counter.textContent = `${specSlide + 1} / ${specImages.length}`;
+      const active = document.querySelectorAll('#specThumbs .thumb')[specSlide];
+      if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    function specNext() {
+      specSlide = (specSlide + 1) % specImages.length;
+      specUpdateCarousel();
+    }
+
+    function specPrev() {
+      specSlide = (specSlide - 1 + specImages.length) % specImages.length;
+      specUpdateCarousel();
+    }
+
+    function specGoto(n) {
+      specSlide = n;
+      specUpdateCarousel();
+    }
 
     // 5. Advanced Interactive Filtering Logic
     let activeChipFilter = 'all';
@@ -1304,7 +1457,7 @@ G&A with cars popup
           <div class="vehicle-card reveal visible">
             <span class="badge">${car.year}</span>
             <div class="img-container" onclick="openVehicleSpecs(${car.id})">
-              <img src="${car.img}" alt="${car.make} ${car.model}" loading="lazy" />
+              <img src="${carCoverImg(car)}" alt="${car.make} ${car.model}" loading="lazy" />
             </div>
             <div class="vehicle-body">
               <div class="vehicle-title" onclick="openVehicleSpecs(${car.id})">
