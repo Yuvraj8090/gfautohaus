@@ -814,7 +814,7 @@
       const grid = document.getElementById('vehicleGrid');
       grid.innerHTML = filtered.map(car => `
         <div class="vehicle-card" onclick="openVehicleModal(${car.id})">
-          <img src="${car.images[0]}" alt="${car.make} ${car.model}" class="vehicle-img">
+          <img src="${car.images && car.images.length ? car.images[0] : 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23eef2f7%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%23999%22%3EPhoto coming soon%3C/text%3E%3C/svg%3E'}" alt="${car.make} ${car.model}" class="vehicle-img">
           <div class="vehicle-info">
             <div class="vehicle-title">${car.make}</div>
             <div class="vehicle-subtitle">${car.model}</div>
